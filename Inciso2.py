@@ -3,6 +3,7 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 import pandas as pd
+import HuffmanCoding
 
 #se leen los archivos csv
 df1 = pd.read_csv('S1.csv',header=None,dtype=int) #Buenos Aires
@@ -96,6 +97,7 @@ def probabilidadMemoria1(signal,divisor):
             am +=1
         elif signal[i] == 'A' and signal[i-1] == 'A':
             aa +=1
+    longitud= len(signal)-1
     probBB = bb/divisor[0]
     probBM = bm/divisor[0]
     probBA = ba/divisor[0]
@@ -153,12 +155,62 @@ print('La entropia de Buenos Aires con memoria 1 es:', entropiaBAMemoria1)
 print('La entropia de Bogota con memoria 1 es:', entropiaBOMemoria1)
 print('La entropia de Vancouver con memoria 1 es:', entropiaVAMemoria1)
 
+#ingreso los valores de las distribuciones de probabilidades sin memoria a un diccionario con key: 'B','M','A'
+p_distBA = {    'B': probBA[0],
+                'M': probBA[1],
+                'A': probBA[2]  }
 
-prueba=''
-prueba = prueba+'A'
+p_distBO = {    'B': probBO[0],
+                'M': probBO[1],
+                'A': probBO[2]  }
 
-print(prueba)
+p_distVA = {    'B': probVA[0],
+                'M': probVA[1],
+                'A': probVA[2]  }
 
-prueba = 'B' +prueba
+codeBA = HuffmanCoding.Huffman(p_distBA)
+codeBO = HuffmanCoding.Huffman(p_distBO)
+codeVA = HuffmanCoding.Huffman(p_distVA)
 
-print(prueba)
+print('\nEl código de Huffman correspondiente a Buenos Aires es: ' + str(codeBA))
+print('\nEl código de Huffman correspondiente a Bogota es: ' + str(codeBO))
+print('\nEl código de Huffman correspondiente a Vancouver es: ' + str(codeVA))
+
+#ingreso los valores de las distribuciones de probabilidades con memoria a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
+p_distBAMemoria1 = {    'BB': probBAMemoria1[0],
+                        'BM': probBAMemoria1[1],
+                        'BA': probBAMemoria1[2],
+                        'MB': probBAMemoria1[3],
+                        'MM': probBAMemoria1[4],
+                        'MA': probBAMemoria1[5],
+                        'AB': probBAMemoria1[6],
+                        'AM': probBAMemoria1[7],
+                        'AA': probBAMemoria1[8]  }
+
+p_distBOMemoria1 = {    'BB': probBOMemoria1[0],
+                        'BM': probBOMemoria1[1],
+                        'BA': probBOMemoria1[2],
+                        'MB': probBOMemoria1[3],
+                        'MM': probBOMemoria1[4],
+                        'MA': probBOMemoria1[5],
+                        'AB': probBOMemoria1[6],
+                        'AM': probBOMemoria1[7],
+                        'AA': probBOMemoria1[8]  }
+
+p_distVAMemoria1 = {    'BB': probVAMemoria1[0],
+                        'BM': probVAMemoria1[1],
+                        'BA': probVAMemoria1[2],
+                        'MB': probVAMemoria1[3],
+                        'MM': probVAMemoria1[4],
+                        'MA': probVAMemoria1[5],
+                        'AB': probVAMemoria1[6],
+                        'AM': probVAMemoria1[7],
+                        'AA': probVAMemoria1[8]  }
+
+codeBAMemoria1 = HuffmanCoding.Huffman(p_distBAMemoria1)
+codeBOMemoria1 = HuffmanCoding.Huffman(p_distBOMemoria1)
+codeVAMemoria1 = HuffmanCoding.Huffman(p_distVAMemoria1)
+
+print('\nEl código de Huffman correspondiente a Buenos Aires con memoria 1 es: ' + str(codeBAMemoria1))
+print('\nEl código de Huffman correspondiente a Bogota con memoria 1 es: ' + str(codeBOMemoria1))
+print('\nEl código de Huffman correspondiente a Vancouver con memoria 1 es: ' + str(codeVAMemoria1))
