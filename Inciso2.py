@@ -224,10 +224,36 @@ p_distVAOrden2 = {    'BB': probVAOrden2[0],
                         'AM': probVAOrden2[7],
                         'AA': probVAOrden2[8]  }
 
-codeBAMemoria1 = HuffmanCoding.Huffman(p_distBAOrden2)
-codeBOMemoria1 = HuffmanCoding.Huffman(p_distBOOrden2)
-codeVAMemoria1 = HuffmanCoding.Huffman(p_distVAOrden2)
+codeBAOrden2 = HuffmanCoding.Huffman(p_distBAOrden2)
+codeBOOrden2 = HuffmanCoding.Huffman(p_distBOOrden2)
+codeVAOrden2 = HuffmanCoding.Huffman(p_distVAOrden2)
 
-print('\nEl código de Huffman correspondiente a Buenos Aires con memoria 1 es: ' + str(codeBAMemoria1))
-print('\nEl código de Huffman correspondiente a Bogota con memoria 1 es: ' + str(codeBOMemoria1))
-print('\nEl código de Huffman correspondiente a Vancouver con memoria 1 es: ' + str(codeVAMemoria1))
+print('\nEl código de Huffman correspondiente a Buenos Aires con orden 2 es: ' + str(codeBAOrden2))
+print('\nEl código de Huffman correspondiente a Bogota con orden 2 es: ' + str(codeBOOrden2))
+print('\nEl código de Huffman correspondiente a Vancouver con orden 2 es: ' + str(codeVAOrden2))
+
+def longPromedio(code,prob):
+    s=0
+    for i in code:
+        s = s + len(code[i])*prob[i]
+    return s
+
+longPromedioBA = longPromedio(codeBA, p_distBA)
+longPromedioBO = longPromedio(codeBO, p_distBO)
+longPromedioVA = longPromedio(codeVA, p_distVA)
+
+print('La longitud promedio de Buenos Aires es:', longPromedioBA)
+print('La longitud promedio de Bogota es:', longPromedioBO)
+print('La longitud promedio de Vancouver es:', longPromedioVA)
+
+longPromedioBAOrden2 = longPromedio(codeBAOrden2, p_distBAOrden2)
+longPromedioBOOrden2 = longPromedio(codeBOOrden2, p_distBOOrden2)
+longPromedioVAOrden2 = longPromedio(codeVAOrden2, p_distVAOrden2)
+
+print('La longitud promedio de Buenos Aires de orden 2 es:', longPromedioBAOrden2)
+print('La longitud promedio de Bogota de orden 2 es:', longPromedioBOOrden2)
+print('La longitud promedio de Vancouver de orden 2 es:', longPromedioVAOrden2)
+
+#Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver sin memoria
+
+#Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver con memoria
