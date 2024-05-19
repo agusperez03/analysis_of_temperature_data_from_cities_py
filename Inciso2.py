@@ -147,13 +147,30 @@ print('La entropia de Bogota es:', entropiaBO)
 print('La entropia de Vancouver es:', entropiaVA)
 
 #con memoria
-entropiaBAMemoria1 = entropia(probBAMemoria1)
-entropiaBOMemoria1 = entropia(probBOMemoria1)
-entropiaVAMemoria1 = entropia(probVAMemoria1)
+entropiaBAOrden2 = entropia(probBAMemoria1)
+entropiaBOOrden2 = entropia(probBOMemoria1)
+entropiaVAOrden2 = entropia(probVAMemoria1)
 
-print('La entropia de Buenos Aires con memoria 1 es:', entropiaBAMemoria1)
-print('La entropia de Bogota con memoria 1 es:', entropiaBOMemoria1)
-print('La entropia de Vancouver con memoria 1 es:', entropiaVAMemoria1)
+print('La entropia de Buenos Aires con memoria es:', entropiaBAOrden2)
+print('La entropia de Bogota con memoria es:', entropiaBOOrden2)
+print('La entropia de Vancouver con memoria es:', entropiaVAOrden2)
+
+#se calculara la probabilidad de la extension a orden 2 para realizar el b)
+def probabilidadOrden2(signal):
+    extension = []
+    for i in range(len(signal)):
+       for j in range(len(signal)):
+            extension.append(signal[i] * signal[j])
+    
+    return extension
+
+probBAOrden2 = probabilidadOrden2(probBA)
+probBOOrden2 = probabilidadOrden2(probBO)
+probVAOrden2 = probabilidadOrden2(probVA)
+
+print('La probabilidades de Buenos Aires extendido a orden 2 es:', probBAOrden2)
+print('La probabilidades de Bogota extendido a orden 2 es:', probBOOrden2)
+print('La probabilidades de Vancouver extendido a orden 2 es:', probVAOrden2)
 
 #ingreso los valores de las distribuciones de probabilidades sin memoria a un diccionario con key: 'B','M','A'
 p_distBA = {    'B': probBA[0],
@@ -176,40 +193,40 @@ print('\nEl código de Huffman correspondiente a Buenos Aires es: ' + str(codeBA
 print('\nEl código de Huffman correspondiente a Bogota es: ' + str(codeBO))
 print('\nEl código de Huffman correspondiente a Vancouver es: ' + str(codeVA))
 
-#ingreso los valores de las distribuciones de probabilidades con memoria a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
-p_distBAMemoria1 = {    'BB': probBAMemoria1[0],
-                        'BM': probBAMemoria1[1],
-                        'BA': probBAMemoria1[2],
-                        'MB': probBAMemoria1[3],
-                        'MM': probBAMemoria1[4],
-                        'MA': probBAMemoria1[5],
-                        'AB': probBAMemoria1[6],
-                        'AM': probBAMemoria1[7],
-                        'AA': probBAMemoria1[8]  }
+#ingreso los valores de las distribuciones de probabilidades de orden 2 a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
+p_distBAOrden2 = {    'BB': probBAOrden2[0],
+                        'BM': probBAOrden2[1],
+                        'BA': probBAOrden2[2],
+                        'MB': probBAOrden2[3],
+                        'MM': probBAOrden2[4],
+                        'MA': probBAOrden2[5],
+                        'AB': probBAOrden2[6],
+                        'AM': probBAOrden2[7],
+                        'AA': probBAOrden2[8]  }
 
-p_distBOMemoria1 = {    'BB': probBOMemoria1[0],
-                        'BM': probBOMemoria1[1],
-                        'BA': probBOMemoria1[2],
-                        'MB': probBOMemoria1[3],
-                        'MM': probBOMemoria1[4],
-                        'MA': probBOMemoria1[5],
-                        'AB': probBOMemoria1[6],
-                        'AM': probBOMemoria1[7],
-                        'AA': probBOMemoria1[8]  }
+p_distBOOrden2 = {    'BB': probBOOrden2[0],
+                        'BM': probBOOrden2[1],
+                        'BA': probBOOrden2[2],
+                        'MB': probBOOrden2[3],
+                        'MM': probBOOrden2[4],
+                        'MA': probBOOrden2[5],
+                        'AB': probBOOrden2[6],
+                        'AM': probBOOrden2[7],
+                        'AA': probBOOrden2[8]  }
 
-p_distVAMemoria1 = {    'BB': probVAMemoria1[0],
-                        'BM': probVAMemoria1[1],
-                        'BA': probVAMemoria1[2],
-                        'MB': probVAMemoria1[3],
-                        'MM': probVAMemoria1[4],
-                        'MA': probVAMemoria1[5],
-                        'AB': probVAMemoria1[6],
-                        'AM': probVAMemoria1[7],
-                        'AA': probVAMemoria1[8]  }
+p_distVAOrden2 = {    'BB': probVAOrden2[0],
+                        'BM': probVAOrden2[1],
+                        'BA': probVAOrden2[2],
+                        'MB': probVAOrden2[3],
+                        'MM': probVAOrden2[4],
+                        'MA': probVAOrden2[5],
+                        'AB': probVAOrden2[6],
+                        'AM': probVAOrden2[7],
+                        'AA': probVAOrden2[8]  }
 
-codeBAMemoria1 = HuffmanCoding.Huffman(p_distBAMemoria1)
-codeBOMemoria1 = HuffmanCoding.Huffman(p_distBOMemoria1)
-codeVAMemoria1 = HuffmanCoding.Huffman(p_distVAMemoria1)
+codeBAMemoria1 = HuffmanCoding.Huffman(p_distBAOrden2)
+codeBOMemoria1 = HuffmanCoding.Huffman(p_distBOOrden2)
+codeVAMemoria1 = HuffmanCoding.Huffman(p_distVAOrden2)
 
 print('\nEl código de Huffman correspondiente a Buenos Aires con memoria 1 es: ' + str(codeBAMemoria1))
 print('\nEl código de Huffman correspondiente a Bogota con memoria 1 es: ' + str(codeBOMemoria1))
