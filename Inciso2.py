@@ -4,6 +4,7 @@ import random
 import matplotlib.pyplot as plt
 import pandas as pd
 import HuffmanCoding
+import Montecarlo
 
 #se leen los archivos csv
 df1 = pd.read_csv('S1.csv',header=None,dtype=int) #Buenos Aires
@@ -99,19 +100,19 @@ def probabilidadMemoria1(signal,divisor):
             aa +=1
     longitud= len(signal)-1
     probBB = bb/divisor[0]
-    probBM = bm/divisor[0]
-    probBA = ba/divisor[0]
-    probMB = mb/divisor[1]
+    probBM = bm/divisor[1]
+    if divisor[2]!=0 :
+        probBA = ba/divisor[2]
+    else:
+        probBA = 0
+    probMB = mb/divisor[0]
     probMM = mm/divisor[1]
-    probMA = ma/divisor[1]
     if divisor[2]!=0 :
-        probAB = ab/divisor[2]
+        probMA = ma/divisor[2]
     else:
-        probAB = 0
-    if divisor[2]!=0 :
-        probAM = am/divisor[2]
-    else:
-        probAM = 0
+        probMA = 0
+    probAB = ab/divisor[0]
+    probAM = am/divisor[1]
     if divisor[2]!=0 :
         probAA = aa/divisor[2]
     else:
@@ -126,7 +127,9 @@ probVAMemoria1 = probabilidadMemoria1(VAconvertido,recuentoVA)
 
 print('La probabilidades de Buenos Aires con memoria 1 es:', probBAMemoria1)
 print('La probabilidades de Bogota con memoria 1 es:', probBOMemoria1)
+print('La sumatoria de las probabilidades de Bogota con memoria 1 es:', sum(probBOMemoria1))
 print('La probabilidades de Vancouver con memoria 1 es:', probVAMemoria1)
+print('La sumatoria de las probabilidades de Vancouver con memoria 1 es:', sum(probVAMemoria1))
 
 #calculo de la entropia
 def entropia(prob):
@@ -193,36 +196,44 @@ print('\nEl código de Huffman correspondiente a Buenos Aires es: ' + str(codeBA
 print('\nEl código de Huffman correspondiente a Bogota es: ' + str(codeBO))
 print('\nEl código de Huffman correspondiente a Vancouver es: ' + str(codeVA))
 
+vector_estacionario_BA = Montecarlo.vector_estacionario(probBAMemoria1)
+vector_estacionario_BO = Montecarlo.vector_estacionario(probBOMemoria1)
+vector_estacionario_VA = Montecarlo.vector_estacionario(probVAMemoria1)
+
+print('El vector estacionario de Buenos Aires es:', vector_estacionario_BA)
+print('El vector estacionario de Bogota es:', vector_estacionario_BO)
+print('El vector estacionario de Vancouver es:', vector_estacionario_VA)
+
 #ingreso los valores de las distribuciones de probabilidades de orden 2 a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
-p_distBAOrden2 = {    'BB': probBAOrden2[0],
-                        'BM': probBAOrden2[1],
-                        'BA': probBAOrden2[2],
-                        'MB': probBAOrden2[3],
-                        'MM': probBAOrden2[4],
-                        'MA': probBAOrden2[5],
-                        'AB': probBAOrden2[6],
-                        'AM': probBAOrden2[7],
-                        'AA': probBAOrden2[8]  }
+p_distBAOrden2 = {    'BB': probBAMemoria1[0] * vector_estacionario_BA[0],
+                        'BM': probBAMemoria1[1] * vector_estacionario_BA[1],
+                        'BA': probBAMemoria1[2] * vector_estacionario_BA[2],
+                        'MB': probBAMemoria1[3] * vector_estacionario_BA[0],
+                        'MM': probBAMemoria1[4] * vector_estacionario_BA[1],
+                        'MA': probBAMemoria1[5] * vector_estacionario_BA[2],
+                        'AB': probBAMemoria1[6] * vector_estacionario_BA[0],
+                        'AM': probBAMemoria1[7] * vector_estacionario_BA[1],
+                        'AA': probBAMemoria1[8] * vector_estacionario_BA[2]  }
 
-p_distBOOrden2 = {    'BB': probBOOrden2[0],
-                        'BM': probBOOrden2[1],
-                        'BA': probBOOrden2[2],
-                        'MB': probBOOrden2[3],
-                        'MM': probBOOrden2[4],
-                        'MA': probBOOrden2[5],
-                        'AB': probBOOrden2[6],
-                        'AM': probBOOrden2[7],
-                        'AA': probBOOrden2[8]  }
+p_distBOOrden2 = {    'BB': probBOMemoria1[0] * vector_estacionario_BO[0],
+                        'BM': probBOMemoria1[1] * vector_estacionario_BO[1],
+                        'BA': probBOMemoria1[2] * vector_estacionario_BO[2],
+                        'MB': probBOMemoria1[3] * vector_estacionario_BO[0],
+                        'MM': probBOMemoria1[4] * vector_estacionario_BO[1],
+                        'MA': probBOMemoria1[5] * vector_estacionario_BO[2],
+                        'AB': probBOMemoria1[6] * vector_estacionario_BO[0],
+                        'AM': probBOMemoria1[7] * vector_estacionario_BO[1],
+                        'AA': probBOMemoria1[8] * vector_estacionario_BO[2] }
 
-p_distVAOrden2 = {    'BB': probVAOrden2[0],
-                        'BM': probVAOrden2[1],
-                        'BA': probVAOrden2[2],
-                        'MB': probVAOrden2[3],
-                        'MM': probVAOrden2[4],
-                        'MA': probVAOrden2[5],
-                        'AB': probVAOrden2[6],
-                        'AM': probVAOrden2[7],
-                        'AA': probVAOrden2[8]  }
+p_distVAOrden2 = {    'BB': probVAMemoria1[0] * vector_estacionario_VA[0],
+                        'BM': probVAMemoria1[1] * vector_estacionario_VA[1],
+                        'BA': probVAMemoria1[2] * vector_estacionario_VA[2],
+                        'MB': probVAMemoria1[3] * vector_estacionario_VA[0],
+                        'MM': probVAMemoria1[4] * vector_estacionario_VA[1],
+                        'MA': probVAMemoria1[5] * vector_estacionario_VA[2],
+                        'AB': probVAMemoria1[6] * vector_estacionario_VA[0],
+                        'AM': probVAMemoria1[7] * vector_estacionario_VA[1],
+                        'AA': probVAMemoria1[8] * vector_estacionario_VA[2] }
 
 codeBAOrden2 = HuffmanCoding.Huffman(p_distBAOrden2)
 codeBOOrden2 = HuffmanCoding.Huffman(p_distBOOrden2)
@@ -231,6 +242,26 @@ codeVAOrden2 = HuffmanCoding.Huffman(p_distVAOrden2)
 print('\nEl código de Huffman correspondiente a Buenos Aires con orden 2 es: ' + str(codeBAOrden2))
 print('\nEl código de Huffman correspondiente a Bogota con orden 2 es: ' + str(codeBOOrden2))
 print('\nEl código de Huffman correspondiente a Vancouver con orden 2 es: ' + str(codeVAOrden2))
+
+#recorrer el diccionario y mostrar por pantalla la sumatoria acumulada 
+print('\nLa distribución de probabilidad de Buenos Aires con memoria 1 es: ')
+suma=0
+for value in p_distBAOrden2.items():
+    suma += value[1]
+print(suma)
+
+print('\nLa distribución de probabilidad de Bogota con memoria 1 es: ')
+suma=0
+for value in p_distBOOrden2.items():
+    suma += value[1]
+print(suma)
+
+print('\nLa distribución de probabilidad de Vancouver con memoria 1 es: ')
+suma=0
+for value in p_distVAOrden2.items():
+    suma += value[1]
+print(suma)
+
 
 def longPromedio(code,prob):
     s=0
@@ -257,3 +288,21 @@ print('La longitud promedio de Vancouver de orden 2 es:', longPromedioVAOrden2)
 #Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver sin memoria
 
 #Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver con memoria
+def verificar_teorema_shannon(entropia, longitud_promedio, n):
+    if entropia <= longitud_promedio/n < entropia + 1/n:
+        return True
+    else:
+        return False
+
+# Verificación del teorema de Shannon para fuentes sin memoria
+print('\nVerificación del primer teorema de Shannon para fuentes sin memoria:')
+verificacion_BA = verificar_teorema_shannon(entropiaBA, longPromedioBA, 1)
+verificacion_BO = verificar_teorema_shannon(entropiaBO, longPromedioBO, 1)
+verificacion_VA = verificar_teorema_shannon(entropiaVA, longPromedioVA, 1)
+
+print(f'Buenos Aires: {verificacion_BA}')
+print(f'Bogotá: {verificacion_BO}')
+print(f'Vancouver: {verificacion_VA}')
+
+# Verificación del teorema de Shannon para fuentes con memoria
+
