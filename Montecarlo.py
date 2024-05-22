@@ -12,20 +12,24 @@ def vector_estacionario(probabilidad):
         for j in range(3):
             prob_acum[i][j] = probabilidad[aux]
             aux+=1
+    """
     #muestro la matriz de probabilidad
     print("Matriz de probabilidad")
     for i in range(3):
         print(prob_acum[i])
+    """
     #Ahora se calcula la probabilidad acumulada
     for i in range(1,3):
         for j in range(0, 3):
             prob_acum[i][j] += prob_acum[i-1][j]
             if prob_acum[i][j] + 0.001 > 1:
                 prob_acum[i][j] = 1
-    #muesstro la matriz de probabilidad acumulada
+    """"
+    #muestro la matriz de probabilidad acumulada
     print("Matriz de probabilidad acumulada")
     for i in range(3):
         print(prob_acum[i])
+    """
 
     t_actual = 0
     count = [0,0,0]
