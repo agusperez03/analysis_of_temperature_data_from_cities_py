@@ -32,7 +32,7 @@ def p_distribution_list(p_distribution_dict):
         element = [p_distribution_dict[i],[i]]
         if element[0] != 0:
             list.append(element)
-    if (sum(i[0] for i in list)) != 1 :
+    if (sum(i[0] for i in list)) < 0.9999999999999998 :
         print("Valores erroneos en la distribución de probabilidades")
         list = []
     return list

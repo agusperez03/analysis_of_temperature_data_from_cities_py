@@ -68,61 +68,60 @@ print('La probabilidades de Bogota es:', probBO)
 print('La probabilidades de Vancouver es:', probVA)
 
 #se calculara la probabilidad con memoria de 1
-def probabilidadMemoria1(signal,divisor):
-    bb=0
-    bm=0
-    ba=0
-    mb=0
-    mm=0
-    ma=0
-    ab=0
-    am=0
-    aa=0
+def probabilidadMemoria1(signal):
+    # Inicializar contadores
+    bb = bm = ba = 0
+    mb = mm = ma = 0
+    ab = am = aa = 0
+    
+    # Inicializar contadores de estados anteriores
+    total_b = total_m = total_a = 0
+    
+    # Contar transiciones
     for i in range(1, len(signal)):
-        if signal[i] == 'B' and signal[i-1] == 'B':
-            bb +=1
-        elif signal[i] == 'B' and signal[i-1] == 'M':
-            bm +=1
-        elif signal[i] == 'B' and signal[i-1] == 'A':
-            ba +=1
-        elif signal[i] == 'M' and signal[i-1] == 'B':
-            mb +=1
-        elif signal[i] == 'M' and signal[i-1] == 'M':
-            mm +=1
-        elif signal[i] == 'M' and signal[i-1] == 'A':
-            ma +=1
-        elif signal[i] == 'A' and signal[i-1] == 'B':
-            ab +=1
-        elif signal[i] == 'A' and signal[i-1] == 'M':
-            am +=1
-        elif signal[i] == 'A' and signal[i-1] == 'A':
-            aa +=1
-    longitud= len(signal)-1
-    probBB = bb/divisor[0]
-    probBM = bm/divisor[0]
-    probBA = ba/divisor[0]
-    probMB = mb/divisor[1]
-    probMM = mm/divisor[1]
-    probMA = ma/divisor[1]
-    if divisor[2]!=0 :
-        probAB = ab/divisor[2]
-    else:
-        probAB = 0
-    if divisor[2]!=0 :
-        probAM = am/divisor[2]
-    else:
-        probAM = 0
-    if divisor[2]!=0 :
-        probAA = aa/divisor[2]
-    else:
-        probAA = 0
+        if signal[i-1] == 'B':
+            total_b += 1
+            if signal[i] == 'B':
+                bb += 1
+            elif signal[i] == 'M':
+                bm += 1
+            elif signal[i] == 'A':
+                ba += 1
+        elif signal[i-1] == 'M':
+            total_m += 1
+            if signal[i] == 'B':
+                mb += 1
+            elif signal[i] == 'M':
+                mm += 1
+            elif signal[i] == 'A':
+                ma += 1
+        elif signal[i-1] == 'A':
+            total_a += 1
+            if signal[i] == 'B':
+                ab += 1
+            elif signal[i] == 'M':
+                am += 1
+            elif signal[i] == 'A':
+                aa += 1
+
+    # Calcular probabilidades
+    probBB = bb / total_b if total_b != 0 else 0
+    probBM = bm / total_b if total_b != 0 else 0
+    probBA = ba / total_b if total_b != 0 else 0
+    probMB = mb / total_m if total_m != 0 else 0
+    probMM = mm / total_m if total_m != 0 else 0
+    probMA = ma / total_m if total_m != 0 else 0
+    probAB = ab / total_a if total_a != 0 else 0
+    probAM = am / total_a if total_a != 0 else 0
+    probAA = aa / total_a if total_a != 0 else 0
+
     salida = [probBB, probBM, probBA, probMB, probMM, probMA, probAB, probAM, probAA]
     
     return salida
 
-probBAMemoria1 = probabilidadMemoria1(BAconvertido,recuentoBA)
-probBOMemoria1 = probabilidadMemoria1(BOconvertido,recuentoBO)
-probVAMemoria1 = probabilidadMemoria1(VAconvertido,recuentoVA)
+probBAMemoria1 = probabilidadMemoria1(BAconvertido)
+probBOMemoria1 = probabilidadMemoria1(BOconvertido)
+probVAMemoria1 = probabilidadMemoria1(VAconvertido)
 
 print('La probabilidades de Buenos Aires con memoria 1 es:', probBAMemoria1)
 print('La probabilidades de Bogota con memoria 1 es:', probBOMemoria1)
@@ -177,35 +176,55 @@ print('\nEl código de Huffman correspondiente a Bogota es: ' + str(codeBO))
 print('\nEl código de Huffman correspondiente a Vancouver es: ' + str(codeVA))
 
 #ingreso los valores de las distribuciones de probabilidades con memoria a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
-p_distBAMemoria1 = {    'BB': probBAMemoria1[0],
-                        'BM': probBAMemoria1[1],
-                        'BA': probBAMemoria1[2],
-                        'MB': probBAMemoria1[3],
-                        'MM': probBAMemoria1[4],
-                        'MA': probBAMemoria1[5],
-                        'AB': probBAMemoria1[6],
-                        'AM': probBAMemoria1[7],
-                        'AA': probBAMemoria1[8]  }
+p_distBAMemoria1 = {    'BB': probBAMemoria1[0]*probBA[0],
+                        'BM': probBAMemoria1[1]*probBA[0],
+                        'BA': probBAMemoria1[2]*probBA[0],
+                        'MB': probBAMemoria1[3]*probBA[1],
+                        'MM': probBAMemoria1[4]*probBA[1],
+                        'MA': probBAMemoria1[5]*probBA[1],
+                        'AB': probBAMemoria1[6]*probBA[2],
+                        'AM': probBAMemoria1[7]*probBA[2],
+                        'AA': probBAMemoria1[8]*probBA[2]  }
 
-p_distBOMemoria1 = {    'BB': probBOMemoria1[0],
-                        'BM': probBOMemoria1[1],
-                        'BA': probBOMemoria1[2],
-                        'MB': probBOMemoria1[3],
-                        'MM': probBOMemoria1[4],
-                        'MA': probBOMemoria1[5],
-                        'AB': probBOMemoria1[6],
-                        'AM': probBOMemoria1[7],
-                        'AA': probBOMemoria1[8]  }
+p_distBOMemoria1 = {    'BB': probBOMemoria1[0]*probBO[0],
+                        'BM': probBOMemoria1[1]*probBO[0],
+                        'BA': probBOMemoria1[2]*probBO[0],
+                        'MB': probBOMemoria1[3]*probBO[1],
+                        'MM': probBOMemoria1[4]*probBO[1],
+                        'MA': probBOMemoria1[5]*probBO[1],
+                        'AB': probBOMemoria1[6]*probBO[2],
+                        'AM': probBOMemoria1[7]*probBO[2],
+                        'AA': probBOMemoria1[8]*probBO[2]}
 
-p_distVAMemoria1 = {    'BB': probVAMemoria1[0],
-                        'BM': probVAMemoria1[1],
-                        'BA': probVAMemoria1[2],
-                        'MB': probVAMemoria1[3],
-                        'MM': probVAMemoria1[4],
-                        'MA': probVAMemoria1[5],
-                        'AB': probVAMemoria1[6],
-                        'AM': probVAMemoria1[7],
-                        'AA': probVAMemoria1[8]  }
+p_distVAMemoria1 = {    'BB': probVAMemoria1[0]*probVA[0],
+                        'BM': probVAMemoria1[1]*probVA[0],
+                        'BA': probVAMemoria1[2]*probVA[0],
+                        'MB': probVAMemoria1[3]*probVA[1],
+                        'MM': probVAMemoria1[4]*probVA[1],
+                        'MA': probVAMemoria1[5]*probVA[1],
+                        'AB': probVAMemoria1[6]*probVA[2],
+                        'AM': probVAMemoria1[7]*probVA[2],
+                        'AA': probVAMemoria1[8]*probVA[2]}
+
+#recorrer el diccionario y mostrar por pantalla la sumatoria acumulada 
+print('\nLa distribución de probabilidad de Buenos Aires con memoria 1 es: ')
+suma=0
+for value in p_distBAMemoria1.items():
+    suma += value[1]
+print(suma)
+
+print('\nLa distribución de probabilidad de Bogota con memoria 1 es: ')
+suma=0
+for value in p_distBOMemoria1.items():
+    suma += value[1]
+print(suma)
+
+print('\nLa distribución de probabilidad de Vancouver con memoria 1 es: ')
+suma=0
+for value in p_distVAMemoria1.items():
+    suma += value[1]
+print(suma)
+
 
 codeBAMemoria1 = HuffmanCoding.Huffman(p_distBAMemoria1)
 codeBOMemoria1 = HuffmanCoding.Huffman(p_distBOMemoria1)
