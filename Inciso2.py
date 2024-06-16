@@ -177,44 +177,36 @@ print('\nEl código de Huffman correspondiente a Buenos Aires es: ' + str(codeBA
 print('\nEl código de Huffman correspondiente a Bogota es: ' + str(codeBO))
 print('\nEl código de Huffman correspondiente a Vancouver es: ' + str(codeVA))
 
-vector_estacionario_BA = Montecarlo.vector_estacionario(probBAMemoria1)
-vector_estacionario_BO = Montecarlo.vector_estacionario(probBOMemoria1)
-vector_estacionario_VA = Montecarlo.vector_estacionario(probVAMemoria1)
-
-print('\nEl vector estacionario de Buenos Aires es:', vector_estacionario_BA)
-print('El vector estacionario de Bogota es:', vector_estacionario_BO)
-print('El vector estacionario de Vancouver es:', vector_estacionario_VA)
-
 #ingreso los valores de las distribuciones de probabilidades de orden 2 a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
-p_distBAOrden2 = {    'BB': probBAMemoria1[0] * vector_estacionario_BA[0],
-                        'BM': probBAMemoria1[1] * vector_estacionario_BA[1],
-                        'BA': probBAMemoria1[2] * vector_estacionario_BA[2],
-                        'MB': probBAMemoria1[3] * vector_estacionario_BA[0],
-                        'MM': probBAMemoria1[4] * vector_estacionario_BA[1],
-                        'MA': probBAMemoria1[5] * vector_estacionario_BA[2],
-                        'AB': probBAMemoria1[6] * vector_estacionario_BA[0],
-                        'AM': probBAMemoria1[7] * vector_estacionario_BA[1],
-                        'AA': probBAMemoria1[8] * vector_estacionario_BA[2]  }
+p_distBAOrden2 = {    'BB': probBAMemoria1[0] * probBA[0],
+                        'BM': probBAMemoria1[1] * probBA[1],
+                        'BA': probBAMemoria1[2] * probBA[2],
+                        'MB': probBAMemoria1[3] * probBA[0],
+                        'MM': probBAMemoria1[4] * probBA[1],
+                        'MA': probBAMemoria1[5] * probBA[2],
+                        'AB': probBAMemoria1[6] * probBA[0],
+                        'AM': probBAMemoria1[7] * probBA[1],
+                        'AA': probBAMemoria1[8] * probBA[2]  }
 
-p_distBOOrden2 = {    'BB': probBOMemoria1[0] * vector_estacionario_BO[0],
-                        'BM': probBOMemoria1[1] * vector_estacionario_BO[1],
-                        'BA': probBOMemoria1[2] * vector_estacionario_BO[2],
-                        'MB': probBOMemoria1[3] * vector_estacionario_BO[0],
-                        'MM': probBOMemoria1[4] * vector_estacionario_BO[1],
-                        'MA': probBOMemoria1[5] * vector_estacionario_BO[2],
-                        'AB': probBOMemoria1[6] * vector_estacionario_BO[0],
-                        'AM': probBOMemoria1[7] * vector_estacionario_BO[1],
-                        'AA': probBOMemoria1[8] * vector_estacionario_BO[2] }
+p_distBOOrden2 = {    'BB': probBOMemoria1[0] * probBO[0],
+                        'BM': probBOMemoria1[1] * probBO[1],
+                        'BA': probBOMemoria1[2] * probBO[2],
+                        'MB': probBOMemoria1[3] * probBO[0],
+                        'MM': probBOMemoria1[4] * probBO[1],
+                        'MA': probBOMemoria1[5] * probBO[2],
+                        'AB': probBOMemoria1[6] * probBO[0],
+                        'AM': probBOMemoria1[7] * probBO[1],
+                        'AA': probBOMemoria1[8] * probBO[2] }
 
-p_distVAOrden2 = {    'BB': probVAMemoria1[0] * vector_estacionario_VA[0],
-                        'BM': probVAMemoria1[1] * vector_estacionario_VA[1],
-                        'BA': probVAMemoria1[2] * vector_estacionario_VA[2],
-                        'MB': probVAMemoria1[3] * vector_estacionario_VA[0],
-                        'MM': probVAMemoria1[4] * vector_estacionario_VA[1],
-                        'MA': probVAMemoria1[5] * vector_estacionario_VA[2],
-                        'AB': probVAMemoria1[6] * vector_estacionario_VA[0],
-                        'AM': probVAMemoria1[7] * vector_estacionario_VA[1],
-                        'AA': probVAMemoria1[8] * vector_estacionario_VA[2] }
+p_distVAOrden2 = {    'BB': probVAMemoria1[0] * probVA[0],
+                        'BM': probVAMemoria1[1] * probVA[1],
+                        'BA': probVAMemoria1[2] * probVA[2],
+                        'MB': probVAMemoria1[3] * probVA[0],
+                        'MM': probVAMemoria1[4] * probVA[1],
+                        'MA': probVAMemoria1[5] * probVA[2],
+                        'AB': probVAMemoria1[6] * probVA[0],
+                        'AM': probVAMemoria1[7] * probVA[1],
+                        'AA': probVAMemoria1[8] * probVA[2] }
 
 codeBAOrden2 = HuffmanCoding.Huffman(p_distBAOrden2)
 codeBOOrden2 = HuffmanCoding.Huffman(p_distBOOrden2)
@@ -284,4 +276,40 @@ print(f'Bogotá: {verificacion_BO}')
 print(f'Vancouver: {verificacion_VA}')
 
 #Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver con memoria
+
+# Calculo de la longitud total en bits usando el código de Huffman
+def calcular_longitud_total(codigo, señal):
+    longitud_total = 0
+    for simbolo in señal:
+        if simbolo in codigo:
+            longitud_total = longitud_total + len(codigo[simbolo])
+    return longitud_total
+
+def calcular_longitud_total_orden2(codigo, señal):
+    longitud_total = 0
+    i=1
+    while i < len(señal):
+        simbolo = señal[i-1] + señal[i]
+        if simbolo in codigo:
+            longitud_total += len(codigo[simbolo])
+        else:
+            print(f"Warning: '{simbolo}' not found in Huffman code.")
+        i += 2
+    return longitud_total
+
+longitud_total_BA = calcular_longitud_total(codeBA, BAconvertido)
+longitud_total_BO = calcular_longitud_total(codeBO, BOconvertido)
+longitud_total_VA = calcular_longitud_total(codeVA, VAconvertido)
+
+longitud_total_BA_orden2 = calcular_longitud_total_orden2(codeBAOrden2, BAconvertido)
+longitud_total_BO_orden2 = calcular_longitud_total_orden2(codeBOOrden2, BOconvertido)
+longitud_total_VA_orden2 = calcular_longitud_total_orden2(codeVAOrden2, VAconvertido)
+
+print('\nLa longitud total en bits de Buenos Aires usando el código de Huffman es:', longitud_total_BA)
+print('La longitud total en bits de Bogotá usando el código de Huffman es:', longitud_total_BO)
+print('La longitud total en bits de Vancouver usando el código de Huffman es:', longitud_total_VA)
+
+print('\nLa longitud total en bits de Buenos Aires con memoria usando el código de Huffman es:', longitud_total_BA_orden2)
+print('La longitud total en bits de Bogotá con memoria usando el código de Huffman es:', longitud_total_BO_orden2)
+print('La longitud total en bits de Vancouver con memoria usando el código de Huffman es:', longitud_total_VA_orden2)
 
