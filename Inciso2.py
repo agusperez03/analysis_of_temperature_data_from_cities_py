@@ -69,7 +69,7 @@ print('Las probabilidades de Bogota son:', probBO)
 print('Las probabilidades de Vancouver son:', probVA)
 
 #se calculara la probabilidad con memoria de 1
-def probabilidadMemoria1(signal):
+def probabilidadMemoria1(signal,divisor):
     # Inicializar contadores
     bb = bm = ba = 0
     mb = mm = ma = 0
@@ -100,19 +100,19 @@ def probabilidadMemoria1(signal):
             aa +=1
     longitud= len(signal)-1
     probBB = bb/divisor[0]
-    probBM = bm/divisor[1]
-    if divisor[2]!=0 :
-        probBA = ba/divisor[2]
-    else:
-        probBA = 0
-    probMB = mb/divisor[0]
+    probBM = bm/divisor[0]
+    probBA = ba/divisor[0]
+    probMB = mb/divisor[1]
     probMM = mm/divisor[1]
+    probMA = ma/divisor[1]
     if divisor[2]!=0 :
-        probMA = ma/divisor[2]
+        probAB = ab/divisor[2]
     else:
-        probMA = 0
-    probAB = ab/divisor[0]
-    probAM = am/divisor[1]
+        probAB = 0
+    if divisor[2]!=0 :
+        probAM = am/divisor[2]
+    else:
+        probAM = 0
     if divisor[2]!=0 :
         probAA = aa/divisor[2]
     else:
@@ -121,9 +121,9 @@ def probabilidadMemoria1(signal):
     
     return salida
 
-probBAMemoria1 = probabilidadMemoria1(BAconvertido)
-probBOMemoria1 = probabilidadMemoria1(BOconvertido)
-probVAMemoria1 = probabilidadMemoria1(VAconvertido)
+probBAMemoria1 = probabilidadMemoria1(BAconvertido,recuentoBA)
+probBOMemoria1 = probabilidadMemoria1(BOconvertido,recuentoBO)
+probVAMemoria1 = probabilidadMemoria1(VAconvertido,recuentoVA)
 
 print('\nLas probabilidades de Buenos Aires con memoria 1 son:', probBAMemoria1)
 print('Las probabilidades de Bogota con memoria 1 son:', probBOMemoria1)

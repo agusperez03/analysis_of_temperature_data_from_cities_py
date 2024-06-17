@@ -6,6 +6,7 @@ import HuffmanCoding
 import Montecarlo
 from math import log2
 from Inciso2 import BAconvertido, convertir
+import Montecarlo
 
 df1 = pd.read_csv('S4_buenosAiresR.csv',header=None,dtype=int) #Señal recibida
 
@@ -76,3 +77,6 @@ ruido_canal_valor = ruido_canal(matriz_canal, prob_marginal_t1)
 
 print("\nInformación mutua del canal:", informacion_mutua_valor)
 print("Ruido del canal:", ruido_canal_valor)
+
+#realizar montecarlo para un j='B' y N=3
+Montecarlo.simulate_and_plot('M', 1,matriz_canal,1e-6)
