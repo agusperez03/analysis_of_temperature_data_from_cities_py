@@ -2,17 +2,17 @@
 import random
 import matplotlib.pyplot as plt
 
-def Sig_dado_Ant(s,matrizCanal):
+def Sig_dado_Ant(s,matrizCanal,probPrimerSimbolo):
         symbols = ['B', 'M', 'A']
         if s is None:
-            return random.choice(symbols)
+            return random.choices(symbols,probPrimerSimbolo)[0]
         else:
             # Obtiene la distribución de probabilidad para el próximo símbolo desde el diccionario
             probabilities = [matrizCanal[s][symbol] for symbol in symbols]
             # Genera el siguiente símbolo basado en las probabilidades
             return random.choices(symbols, probabilities)[0]
 
-def ProbPrimRec(j, N,matrizCanal, tolerance):
+def ProbPrimRec(j, N,matrizCanal, tolerance,probPrimerSimbolo):
     prob = 0
     prob_ant = -1
     repeticiones = 0
@@ -24,10 +24,10 @@ def ProbPrimRec(j, N,matrizCanal, tolerance):
     
     while not converge(prob, prob_ant, m):
         nro_simb = 1
-        s = Sig_dado_Ant(None,matrizCanal)
+        s = Sig_dado_Ant(None,matrizCanal,probPrimerSimbolo)
         
         while s != j:
-            s = Sig_dado_Ant(s,matrizCanal)
+            s = Sig_dado_Ant(s,matrizCanal,probPrimerSimbolo)
             nro_simb += 1
             
         if nro_simb <= N:
@@ -40,8 +40,8 @@ def ProbPrimRec(j, N,matrizCanal, tolerance):
         
     return probs,prob
 
-def simulate_and_plot(j, N, matrizCanal,tolerancia):
-    probs, final_prob = ProbPrimRec(j, N,matrizCanal,tolerancia)
+def simulate_and_plot(j, N, matrizCanal,tolerancia,probPrimerSimbolo):
+    probs, final_prob = ProbPrimRec(j, N,matrizCanal,tolerancia,probPrimerSimbolo)
         
     plt.plot(probs)
     plt.xlabel('Iteration')
