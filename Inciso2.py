@@ -4,6 +4,7 @@ import random
 import matplotlib.pyplot as plt
 import pandas as pd
 import HuffmanCoding
+import Montecarlo
 
 #se leen los archivos csv
 df1 = pd.read_csv('S1.csv',header=None,dtype=int) #Buenos Aires
@@ -63,9 +64,9 @@ probBA,recuentoBA = probabilidad(BAconvertido)
 probBO,recuentoBO = probabilidad(BOconvertido)
 probVA,recuentoVA = probabilidad(VAconvertido)
 
-print('La probabilidades de Buenos Aires es:', probBA)
-print('La probabilidades de Bogota es:', probBO)
-print('La probabilidades de Vancouver es:', probVA)
+print('Las probabilidades de Buenos Aires son:', probBA)
+print('Las probabilidades de Bogota son:', probBO)
+print('Las probabilidades de Vancouver son:', probVA)
 
 #se calculara la probabilidad con memoria de 1
 def probabilidadMemoria1(signal):
@@ -79,42 +80,43 @@ def probabilidadMemoria1(signal):
     
     # Contar transiciones
     for i in range(1, len(signal)):
-        if signal[i-1] == 'B':
-            total_b += 1
-            if signal[i] == 'B':
-                bb += 1
-            elif signal[i] == 'M':
-                bm += 1
-            elif signal[i] == 'A':
-                ba += 1
-        elif signal[i-1] == 'M':
-            total_m += 1
-            if signal[i] == 'B':
-                mb += 1
-            elif signal[i] == 'M':
-                mm += 1
-            elif signal[i] == 'A':
-                ma += 1
-        elif signal[i-1] == 'A':
-            total_a += 1
-            if signal[i] == 'B':
-                ab += 1
-            elif signal[i] == 'M':
-                am += 1
-            elif signal[i] == 'A':
-                aa += 1
-
-    # Calcular probabilidades
-    probBB = bb / total_b if total_b != 0 else 0
-    probBM = bm / total_b if total_b != 0 else 0
-    probBA = ba / total_b if total_b != 0 else 0
-    probMB = mb / total_m if total_m != 0 else 0
-    probMM = mm / total_m if total_m != 0 else 0
-    probMA = ma / total_m if total_m != 0 else 0
-    probAB = ab / total_a if total_a != 0 else 0
-    probAM = am / total_a if total_a != 0 else 0
-    probAA = aa / total_a if total_a != 0 else 0
-
+        if signal[i] == 'B' and signal[i-1] == 'B':
+            bb +=1
+        elif signal[i] == 'B' and signal[i-1] == 'M':
+            bm +=1
+        elif signal[i] == 'B' and signal[i-1] == 'A':
+            ba +=1
+        elif signal[i] == 'M' and signal[i-1] == 'B':
+            mb +=1
+        elif signal[i] == 'M' and signal[i-1] == 'M':
+            mm +=1
+        elif signal[i] == 'M' and signal[i-1] == 'A':
+            ma +=1
+        elif signal[i] == 'A' and signal[i-1] == 'B':
+            ab +=1
+        elif signal[i] == 'A' and signal[i-1] == 'M':
+            am +=1
+        elif signal[i] == 'A' and signal[i-1] == 'A':
+            aa +=1
+    longitud= len(signal)-1
+    probBB = bb/divisor[0]
+    probBM = bm/divisor[1]
+    if divisor[2]!=0 :
+        probBA = ba/divisor[2]
+    else:
+        probBA = 0
+    probMB = mb/divisor[0]
+    probMM = mm/divisor[1]
+    if divisor[2]!=0 :
+        probMA = ma/divisor[2]
+    else:
+        probMA = 0
+    probAB = ab/divisor[0]
+    probAM = am/divisor[1]
+    if divisor[2]!=0 :
+        probAA = aa/divisor[2]
+    else:
+        probAA = 0
     salida = [probBB, probBM, probBA, probMB, probMM, probMA, probAB, probAM, probAA]
     
     return salida
@@ -123,11 +125,11 @@ probBAMemoria1 = probabilidadMemoria1(BAconvertido)
 probBOMemoria1 = probabilidadMemoria1(BOconvertido)
 probVAMemoria1 = probabilidadMemoria1(VAconvertido)
 
-print('La probabilidades de Buenos Aires con memoria 1 es:', probBAMemoria1)
-print('La probabilidades de Bogota con memoria 1 es:', probBOMemoria1)
-print('La probabilidades de Vancouver con memoria 1 es:', probVAMemoria1)
+print('\nLas probabilidades de Buenos Aires con memoria 1 son:', probBAMemoria1)
+print('Las probabilidades de Bogota con memoria 1 son:', probBOMemoria1)
+print('Las probabilidades de Vancouver con memoria 1 son:', probVAMemoria1)
 
-#calculo de la entropia
+#Calculo de la entropia
 def entropia(prob):
     s=0
     for i in range(0, len(prob)):
@@ -141,18 +143,18 @@ entropiaBA = entropia(probBA)
 entropiaBO = entropia(probBO)
 entropiaVA = entropia(probVA)
 
-print('La entropia de Buenos Aires es:', entropiaBA)
+print('\nLa entropia de Buenos Aires es:', entropiaBA)
 print('La entropia de Bogota es:', entropiaBO)
 print('La entropia de Vancouver es:', entropiaVA)
 
 #con memoria
-entropiaBAMemoria1 = entropia(probBAMemoria1)
-entropiaBOMemoria1 = entropia(probBOMemoria1)
-entropiaVAMemoria1 = entropia(probVAMemoria1)
+entropiaBAOrden2 = entropia(probBAMemoria1)
+entropiaBOOrden2 = entropia(probBOMemoria1)
+entropiaVAOrden2 = entropia(probVAMemoria1)
 
-print('La entropia de Buenos Aires con memoria 1 es:', entropiaBAMemoria1)
-print('La entropia de Bogota con memoria 1 es:', entropiaBOMemoria1)
-print('La entropia de Vancouver con memoria 1 es:', entropiaVAMemoria1)
+print('\nLa entropia de Buenos Aires con memoria es:', entropiaBAOrden2)
+print('La entropia de Bogota con memoria es:', entropiaBOOrden2)
+print('La entropia de Vancouver con memoria es:', entropiaVAOrden2)
 
 #ingreso los valores de las distribuciones de probabilidades sin memoria a un diccionario con key: 'B','M','A'
 p_distBA = {    'B': probBA[0],
@@ -175,61 +177,111 @@ print('\nEl código de Huffman correspondiente a Buenos Aires es: ' + str(codeBA
 print('\nEl código de Huffman correspondiente a Bogota es: ' + str(codeBO))
 print('\nEl código de Huffman correspondiente a Vancouver es: ' + str(codeVA))
 
-#ingreso los valores de las distribuciones de probabilidades con memoria a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
-p_distBAMemoria1 = {    'BB': probBAMemoria1[0]*probBA[0],
-                        'BM': probBAMemoria1[1]*probBA[0],
-                        'BA': probBAMemoria1[2]*probBA[0],
-                        'MB': probBAMemoria1[3]*probBA[1],
-                        'MM': probBAMemoria1[4]*probBA[1],
-                        'MA': probBAMemoria1[5]*probBA[1],
-                        'AB': probBAMemoria1[6]*probBA[2],
-                        'AM': probBAMemoria1[7]*probBA[2],
-                        'AA': probBAMemoria1[8]*probBA[2]  }
+vector_estacionario_BA = Montecarlo.vector_estacionario(probBAMemoria1)
+vector_estacionario_BO = Montecarlo.vector_estacionario(probBOMemoria1)
+vector_estacionario_VA = Montecarlo.vector_estacionario(probVAMemoria1)
 
-p_distBOMemoria1 = {    'BB': probBOMemoria1[0]*probBO[0],
-                        'BM': probBOMemoria1[1]*probBO[0],
-                        'BA': probBOMemoria1[2]*probBO[0],
-                        'MB': probBOMemoria1[3]*probBO[1],
-                        'MM': probBOMemoria1[4]*probBO[1],
-                        'MA': probBOMemoria1[5]*probBO[1],
-                        'AB': probBOMemoria1[6]*probBO[2],
-                        'AM': probBOMemoria1[7]*probBO[2],
-                        'AA': probBOMemoria1[8]*probBO[2]}
+print('\nEl vector estacionario de Buenos Aires es:', vector_estacionario_BA)
+print('El vector estacionario de Bogota es:', vector_estacionario_BO)
+print('El vector estacionario de Vancouver es:', vector_estacionario_VA)
 
-p_distVAMemoria1 = {    'BB': probVAMemoria1[0]*probVA[0],
-                        'BM': probVAMemoria1[1]*probVA[0],
-                        'BA': probVAMemoria1[2]*probVA[0],
-                        'MB': probVAMemoria1[3]*probVA[1],
-                        'MM': probVAMemoria1[4]*probVA[1],
-                        'MA': probVAMemoria1[5]*probVA[1],
-                        'AB': probVAMemoria1[6]*probVA[2],
-                        'AM': probVAMemoria1[7]*probVA[2],
-                        'AA': probVAMemoria1[8]*probVA[2]}
+#ingreso los valores de las distribuciones de probabilidades de orden 2 a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
+p_distBAOrden2 = {    'BB': probBAMemoria1[0] * vector_estacionario_BA[0],
+                        'BM': probBAMemoria1[1] * vector_estacionario_BA[1],
+                        'BA': probBAMemoria1[2] * vector_estacionario_BA[2],
+                        'MB': probBAMemoria1[3] * vector_estacionario_BA[0],
+                        'MM': probBAMemoria1[4] * vector_estacionario_BA[1],
+                        'MA': probBAMemoria1[5] * vector_estacionario_BA[2],
+                        'AB': probBAMemoria1[6] * vector_estacionario_BA[0],
+                        'AM': probBAMemoria1[7] * vector_estacionario_BA[1],
+                        'AA': probBAMemoria1[8] * vector_estacionario_BA[2]  }
 
-#recorrer el diccionario y mostrar por pantalla la sumatoria acumulada 
+p_distBOOrden2 = {    'BB': probBOMemoria1[0] * vector_estacionario_BO[0],
+                        'BM': probBOMemoria1[1] * vector_estacionario_BO[1],
+                        'BA': probBOMemoria1[2] * vector_estacionario_BO[2],
+                        'MB': probBOMemoria1[3] * vector_estacionario_BO[0],
+                        'MM': probBOMemoria1[4] * vector_estacionario_BO[1],
+                        'MA': probBOMemoria1[5] * vector_estacionario_BO[2],
+                        'AB': probBOMemoria1[6] * vector_estacionario_BO[0],
+                        'AM': probBOMemoria1[7] * vector_estacionario_BO[1],
+                        'AA': probBOMemoria1[8] * vector_estacionario_BO[2] }
+
+p_distVAOrden2 = {    'BB': probVAMemoria1[0] * vector_estacionario_VA[0],
+                        'BM': probVAMemoria1[1] * vector_estacionario_VA[1],
+                        'BA': probVAMemoria1[2] * vector_estacionario_VA[2],
+                        'MB': probVAMemoria1[3] * vector_estacionario_VA[0],
+                        'MM': probVAMemoria1[4] * vector_estacionario_VA[1],
+                        'MA': probVAMemoria1[5] * vector_estacionario_VA[2],
+                        'AB': probVAMemoria1[6] * vector_estacionario_VA[0],
+                        'AM': probVAMemoria1[7] * vector_estacionario_VA[1],
+                        'AA': probVAMemoria1[8] * vector_estacionario_VA[2] }
+
+codeBAOrden2 = HuffmanCoding.Huffman(p_distBAOrden2)
+codeBOOrden2 = HuffmanCoding.Huffman(p_distBOOrden2)
+codeVAOrden2 = HuffmanCoding.Huffman(p_distVAOrden2)
+
+print('\nEl código de Huffman correspondiente a Buenos Aires con orden 2 es: ' + str(codeBAOrden2))
+print('\nEl código de Huffman correspondiente a Bogota con orden 2 es: ' + str(codeBOOrden2))
+print('\nEl código de Huffman correspondiente a Vancouver con orden 2 es: ' + str(codeVAOrden2))
+
+"""
 print('\nLa distribución de probabilidad de Buenos Aires con memoria 1 es: ')
 suma=0
-for value in p_distBAMemoria1.items():
+for value in p_distBAOrden2.items():
     suma += value[1]
 print(suma)
 
 print('\nLa distribución de probabilidad de Bogota con memoria 1 es: ')
 suma=0
-for value in p_distBOMemoria1.items():
+for value in p_distBOOrden2.items():
     suma += value[1]
 print(suma)
 
 print('\nLa distribución de probabilidad de Vancouver con memoria 1 es: ')
 suma=0
-for value in p_distVAMemoria1.items():
+for value in p_distVAOrden2.items():
     suma += value[1]
 print(suma)
+"""
 
+def longPromedio(code,prob):
+    s=0
+    for i in code:
+        s = s + len(code[i])*prob[i]
+    return s
 
-codeBAMemoria1 = HuffmanCoding.Huffman(p_distBAMemoria1)
-codeBOMemoria1 = HuffmanCoding.Huffman(p_distBOMemoria1)
-codeVAMemoria1 = HuffmanCoding.Huffman(p_distVAMemoria1)
+longPromedioBA = longPromedio(codeBA, p_distBA)
+longPromedioBO = longPromedio(codeBO, p_distBO)
+longPromedioVA = longPromedio(codeVA, p_distVA)
 
-print('\nEl código de Huffman correspondiente a Buenos Aires con memoria 1 es: ' + str(codeBAMemoria1))
-print('\nEl código de Huffman correspondiente a Bogota con memoria 1 es: ' + str(codeBOMemoria1))
-print('\nEl código de Huffman correspondiente a Vancouver con memoria 1 es: ' + str(codeVAMemoria1))
+print('\nLa longitud promedio de Buenos Aires es:', longPromedioBA)
+print('La longitud promedio de Bogota es:', longPromedioBO)
+print('La longitud promedio de Vancouver es:', longPromedioVA)
+
+longPromedioBAOrden2 = longPromedio(codeBAOrden2, p_distBAOrden2)
+longPromedioBOOrden2 = longPromedio(codeBOOrden2, p_distBOOrden2)
+longPromedioVAOrden2 = longPromedio(codeVAOrden2, p_distVAOrden2)
+
+print('La longitud promedio de Buenos Aires de orden 2 es:', longPromedioBAOrden2)
+print('La longitud promedio de Bogota de orden 2 es:', longPromedioBOOrden2)
+print('La longitud promedio de Vancouver de orden 2 es:', longPromedioVAOrden2)
+
+#Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver sin memoria
+def verificar_teorema_shannon(entropia, longitud_promedio, n):
+    if entropia <= longitud_promedio/n < entropia + 1/n:
+        return True
+    else:
+        return False
+
+# Verificación del teorema de Shannon para fuentes sin memoria
+print('\nVerificación del primer teorema de Shannon para fuentes sin memoria:')
+verificacion_BA = verificar_teorema_shannon(entropiaBA, longPromedioBA, 1)
+verificacion_BO = verificar_teorema_shannon(entropiaBO, longPromedioBO, 1)
+verificacion_VA = verificar_teorema_shannon(entropiaVA, longPromedioVA, 1)
+
+print(f'Buenos Aires: {verificacion_BA}')
+print(f'Bogotá: {verificacion_BO}')
+print(f'Vancouver: {verificacion_VA}')
+
+#Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver con memoria
+
