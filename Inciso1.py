@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+print('\n-------------------------------------- Inciso 1 --------------------------------------\n')
 
 #se leen los archivos csv
 df1 = pd.read_csv('S1.csv',header=None,dtype=int) #Buenos Aires

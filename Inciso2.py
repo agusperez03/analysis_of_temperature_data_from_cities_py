@@ -4,7 +4,8 @@ import random
 import matplotlib.pyplot as plt
 import pandas as pd
 import HuffmanCoding
-import Montecarlo
+
+print('\n-------------------------------------- Inciso 2 --------------------------------------\n')
 
 #se leen los archivos csv
 df1 = pd.read_csv('S1.csv',header=None,dtype=int) #Buenos Aires
@@ -16,7 +17,7 @@ BuenosAires = df1[0].values
 Bogota = df2[0].values
 Vancouver = df3[0].values
 
-#convertir todos los enteros de BuenosAires,Bogota y Vancouver a strings dados por los siguientes rangos: B < 10; 10 >= M <20; A>=20
+#convertir todos los enteros de Buenos Aires, Bogota y Vancouver a strings dados por los siguientes rangos: B < 10; 10 >= M <20; A>=20
 def convertir(signal):
     aux=[]
     for i in range(0, len(signal)):
@@ -64,9 +65,9 @@ probBA,recuentoBA = probabilidad(BAconvertido)
 probBO,recuentoBO = probabilidad(BOconvertido)
 probVA,recuentoVA = probabilidad(VAconvertido)
 
-print('Las probabilidades de Buenos Aires son:', probBA)
-print('Las probabilidades de Bogota son:', probBO)
-print('Las probabilidades de Vancouver son:', probVA)
+print('Las probabilidades de Buenos Aires son (B, M, A):', probBA)
+print('Las probabilidades de Bogota son (B, M, A):', probBO)
+print('Las probabilidades de Vancouver son (B, M, A):', probVA)
 
 #se calculara la probabilidad con memoria de 1
 def probabilidadMemoria1(signal,divisor):
@@ -99,6 +100,7 @@ def probabilidadMemoria1(signal,divisor):
         elif signal[i] == 'A' and signal[i-1] == 'A':
             aa +=1
     longitud= len(signal)-1
+    #probXY probabilidad de x dado y
     probBB = bb/divisor[0]
     probBM = bm/divisor[0]
     probBA = ba/divisor[0]
@@ -129,6 +131,8 @@ print('\nLas probabilidades de Buenos Aires con memoria 1 son:', probBAMemoria1)
 print('Las probabilidades de Bogota con memoria 1 son:', probBOMemoria1)
 print('Las probabilidades de Vancouver con memoria 1 son:', probVAMemoria1)
 
+#INCISO A
+
 #Calculo de la entropia
 def entropia(prob):
     s=0
@@ -147,14 +151,30 @@ print('\nLa entropia de Buenos Aires es:', entropiaBA)
 print('La entropia de Bogota es:', entropiaBO)
 print('La entropia de Vancouver es:', entropiaVA)
 
+#Calculo de la entropia
+def entropiaConMemoria(prob):
+    entropias = []
+    for i in range (0, 3):
+        Hcond = 0
+        for probabilidad in prob[i*3:i*3+3]:
+            if probabilidad > 0:
+                Hcond += probabilidad * np.log2(probabilidad)
+        entropias.append(-Hcond)
+    return entropias
+
 #con memoria
-entropiaBAOrden2 = entropia(probBAMemoria1)
-entropiaBOOrden2 = entropia(probBOMemoria1)
-entropiaVAOrden2 = entropia(probVAMemoria1)
+condicionalesBA = entropiaConMemoria(probBAMemoria1)
+entropiaBAOrden2 = probBA[0]*condicionalesBA[0] + probBA[1]*condicionalesBA[1] + probBA[2]*condicionalesBA[2]
+condicionalesBO = entropiaConMemoria(probBOMemoria1)
+entropiaBOOrden2 = probBO[0]*condicionalesBO[0] + probBO[1]*condicionalesBO[1] + probBO[2]*condicionalesBO[2]
+condicionalesVA = entropiaConMemoria(probVAMemoria1)
+entropiaVAOrden2 = probVA[0]*condicionalesVA[0] + probVA[1]*condicionalesVA[1] + probVA[2]*condicionalesVA[2]
 
 print('\nLa entropia de Buenos Aires con memoria es:', entropiaBAOrden2)
 print('La entropia de Bogota con memoria es:', entropiaBOOrden2)
 print('La entropia de Vancouver con memoria es:', entropiaVAOrden2)
+
+#INCISO B
 
 #ingreso los valores de las distribuciones de probabilidades sin memoria a un diccionario con key: 'B','M','A'
 p_distBA = {    'B': probBA[0],
@@ -179,33 +199,33 @@ print('\nEl código de Huffman correspondiente a Vancouver es: ' + str(codeVA))
 
 #ingreso los valores de las distribuciones de probabilidades de orden 2 a un diccionario con key: 'BB','BM','BA','MB','MM','MA','AB','AM','AA'
 p_distBAOrden2 = {    'BB': probBAMemoria1[0] * probBA[0],
-                        'BM': probBAMemoria1[1] * probBA[1],
-                        'BA': probBAMemoria1[2] * probBA[2],
-                        'MB': probBAMemoria1[3] * probBA[0],
+                        'BM': probBAMemoria1[1] * probBA[0],
+                        'BA': probBAMemoria1[2] * probBA[0],
+                        'MB': probBAMemoria1[3] * probBA[1],
                         'MM': probBAMemoria1[4] * probBA[1],
-                        'MA': probBAMemoria1[5] * probBA[2],
-                        'AB': probBAMemoria1[6] * probBA[0],
-                        'AM': probBAMemoria1[7] * probBA[1],
+                        'MA': probBAMemoria1[5] * probBA[1],
+                        'AB': probBAMemoria1[6] * probBA[2],
+                        'AM': probBAMemoria1[7] * probBA[2],
                         'AA': probBAMemoria1[8] * probBA[2]  }
 
 p_distBOOrden2 = {    'BB': probBOMemoria1[0] * probBO[0],
-                        'BM': probBOMemoria1[1] * probBO[1],
-                        'BA': probBOMemoria1[2] * probBO[2],
-                        'MB': probBOMemoria1[3] * probBO[0],
+                        'BM': probBOMemoria1[1] * probBO[0],
+                        'BA': probBOMemoria1[2] * probBO[0],
+                        'MB': probBOMemoria1[3] * probBO[1],
                         'MM': probBOMemoria1[4] * probBO[1],
-                        'MA': probBOMemoria1[5] * probBO[2],
-                        'AB': probBOMemoria1[6] * probBO[0],
-                        'AM': probBOMemoria1[7] * probBO[1],
+                        'MA': probBOMemoria1[5] * probBO[1],
+                        'AB': probBOMemoria1[6] * probBO[2],
+                        'AM': probBOMemoria1[7] * probBO[2],
                         'AA': probBOMemoria1[8] * probBO[2] }
 
 p_distVAOrden2 = {    'BB': probVAMemoria1[0] * probVA[0],
-                        'BM': probVAMemoria1[1] * probVA[1],
-                        'BA': probVAMemoria1[2] * probVA[2],
-                        'MB': probVAMemoria1[3] * probVA[0],
+                        'BM': probVAMemoria1[1] * probVA[0],
+                        'BA': probVAMemoria1[2] * probVA[0],
+                        'MB': probVAMemoria1[3] * probVA[1],
                         'MM': probVAMemoria1[4] * probVA[1],
-                        'MA': probVAMemoria1[5] * probVA[2],
-                        'AB': probVAMemoria1[6] * probVA[0],
-                        'AM': probVAMemoria1[7] * probVA[1],
+                        'MA': probVAMemoria1[5] * probVA[1],
+                        'AB': probVAMemoria1[6] * probVA[2],
+                        'AM': probVAMemoria1[7] * probVA[2],
                         'AA': probVAMemoria1[8] * probVA[2] }
 
 codeBAOrden2 = HuffmanCoding.Huffman(p_distBAOrden2)
@@ -215,26 +235,6 @@ codeVAOrden2 = HuffmanCoding.Huffman(p_distVAOrden2)
 print('\nEl código de Huffman correspondiente a Buenos Aires con orden 2 es: ' + str(codeBAOrden2))
 print('\nEl código de Huffman correspondiente a Bogota con orden 2 es: ' + str(codeBOOrden2))
 print('\nEl código de Huffman correspondiente a Vancouver con orden 2 es: ' + str(codeVAOrden2))
-
-"""
-print('\nLa distribución de probabilidad de Buenos Aires con memoria 1 es: ')
-suma=0
-for value in p_distBAOrden2.items():
-    suma += value[1]
-print(suma)
-
-print('\nLa distribución de probabilidad de Bogota con memoria 1 es: ')
-suma=0
-for value in p_distBOOrden2.items():
-    suma += value[1]
-print(suma)
-
-print('\nLa distribución de probabilidad de Vancouver con memoria 1 es: ')
-suma=0
-for value in p_distVAOrden2.items():
-    suma += value[1]
-print(suma)
-"""
 
 def longPromedio(code,prob):
     s=0
@@ -265,7 +265,6 @@ def verificar_teorema_shannon(entropia, longitud_promedio, n):
     else:
         return False
 
-# Verificación del teorema de Shannon para fuentes sin memoria
 print('\nVerificación del primer teorema de Shannon para fuentes sin memoria:')
 verificacion_BA = verificar_teorema_shannon(entropiaBA, longPromedioBA, 1)
 verificacion_BO = verificar_teorema_shannon(entropiaBO, longPromedioBO, 1)
@@ -276,6 +275,22 @@ print(f'Bogotá: {verificacion_BO}')
 print(f'Vancouver: {verificacion_VA}')
 
 #Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver con memoria
+def verificar_teorema_shannon_memoria(entropia, entropia_cond, longitud_promedio, n):
+    if entropia/n + entropia_cond/n <= longitud_promedio/n < entropia/n + entropia_cond/n + 1/n:
+        return True
+    else:
+        return False
+
+print('\nVerificación del primer teorema de Shannon para fuentes con memoria:')
+verificacion_BA_mem = verificar_teorema_shannon_memoria(entropiaBA, entropiaBAOrden2, longPromedioBAOrden2, 2)
+verificacion_BO_mem = verificar_teorema_shannon_memoria(entropiaBO, entropiaBOOrden2, longPromedioBOOrden2, 2)
+verificacion_VA_mem = verificar_teorema_shannon_memoria(entropiaVA, entropiaVAOrden2, longPromedioVAOrden2, 2)
+
+print(f'Buenos Aires: {verificacion_BA_mem}')
+print(f'Bogotá: {verificacion_BO_mem}')
+print(f'Vancouver: {verificacion_VA_mem}')
+
+
 
 # Calculo de la longitud total en bits usando el código de Huffman
 def calcular_longitud_total(codigo, señal):

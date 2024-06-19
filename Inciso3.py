@@ -1,12 +1,10 @@
-import numpy as np
-import random
-import matplotlib.pyplot as plt
 import pandas as pd
-import HuffmanCoding
 import Montecarlo
 from math import log2
 from Inciso2 import BAconvertido, convertir, probBA
 import Montecarlo
+
+print('\n-------------------------------------- Inciso 3 --------------------------------------\n')
 
 df1 = pd.read_csv('S4_buenosAiresR.csv',header=None,dtype=int) #Señal recibida
 
@@ -35,7 +33,7 @@ def obtener_matriz_canal(T1, T4):
     return conteos
 
 matriz_canal = obtener_matriz_canal(t1, t4)
-print("\n\nMatriz de canal:")
+print("Matriz de canal:")
 print(matriz_canal)
 
 # Función para calcular la probabilidad marginal
@@ -75,8 +73,9 @@ def ruido_canal(matriz_canal, prob_marginal_t1):
 informacion_mutua_valor = informacion_mutua(matriz_canal, prob_marginal_t1, prob_marginal_t4)
 ruido_canal_valor = ruido_canal(matriz_canal, prob_marginal_t1)
 
+print("\nRuido del canal:", ruido_canal_valor)
 print("\nInformación mutua del canal:", informacion_mutua_valor)
-print("Ruido del canal:", ruido_canal_valor)
+
 
 #realizar montecarlo para un j='B' y N=3
-Montecarlo.simulate_and_plot('M', 3,matriz_canal,1e-6,probBA)
+Montecarlo.simulate_and_plot('B', 3,matriz_canal,1e-6,probBA)
