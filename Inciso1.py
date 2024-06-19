@@ -68,10 +68,6 @@ print('El factor de correlacion cruzada entre Buenos Aires y Bogota es:', correl
 print('El factor de correlacion cruzada entre Buenos Aires y Vancouver es:', correlacionBA_VA)
 print('El factor de correlacion cruzada entre Bogota y Vancouver es:', correlacionBO_VA)
 
-print('El factor de correlacion cruzada entre Buenos Aires y Bogota normalizado es:', np.corrcoef(BuenosAires, Bogota)[0,1])
-print('El factor de correlacion cruzada entre Buenos Aires y Vancouver normalizado es:', np.corrcoef(BuenosAires, Vancouver)[0,1])
-print('El factor de correlacion cruzada entre Bogota y Vancouver normalizado es:', np.corrcoef(Bogota, Vancouver)[0,1])
-
 #se grafican las señales
 plt.plot(BuenosAires, label='Temperatura en Buenos Aires')
 plt.plot(Bogota, label='Temperatura en Bogota')
