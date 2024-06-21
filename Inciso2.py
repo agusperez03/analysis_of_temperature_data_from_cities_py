@@ -4,6 +4,7 @@ import random
 import matplotlib.pyplot as plt
 import pandas as pd
 import HuffmanCoding
+import pprint
 
 print('\n-------------------------------------- Inciso 2 --------------------------------------\n')
 
@@ -127,9 +128,12 @@ probBAMemoria1 = probabilidadMemoria1(BAconvertido,recuentoBA)
 probBOMemoria1 = probabilidadMemoria1(BOconvertido,recuentoBO)
 probVAMemoria1 = probabilidadMemoria1(VAconvertido,recuentoVA)
 
-print('\nLas probabilidades de Buenos Aires con memoria 1 son:', probBAMemoria1)
-print('Las probabilidades de Bogota con memoria 1 son:', probBOMemoria1)
-print('Las probabilidades de Vancouver con memoria 1 son:', probVAMemoria1)
+print('\nLas probabilidades de Buenos Aires con memoria 1 son:')
+pprint.pprint(probBAMemoria1)
+print('\nLas probabilidades de Bogota con memoria 1 son:')
+pprint.pprint(probBOMemoria1)
+print('\nLas probabilidades de Vancouver con memoria 1 son:')
+pprint.pprint(probVAMemoria1)
 
 #INCISO A
 
@@ -264,6 +268,13 @@ def verificar_teorema_shannon(entropia, longitud_promedio, n):
         return True
     else:
         return False
+    
+#Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver con memoria
+def verificar_teorema_shannon_memoria(entropia, entropia_cond, longitud_promedio, n):
+    if entropia/n + entropia_cond/n <= longitud_promedio/n < entropia/n + entropia_cond/n + 1/n:
+        return True
+    else:
+        return False
 
 print('\nVerificación del primer teorema de Shannon para fuentes sin memoria:')
 verificacion_BA = verificar_teorema_shannon(entropiaBA, longPromedioBA, 1)
@@ -273,13 +284,6 @@ verificacion_VA = verificar_teorema_shannon(entropiaVA, longPromedioVA, 1)
 print(f'Buenos Aires: {verificacion_BA}')
 print(f'Bogotá: {verificacion_BO}')
 print(f'Vancouver: {verificacion_VA}')
-
-#Verificacion del primer teorema de Shannon para las señales de Buenos Aires, Bogota y Vancouver con memoria
-def verificar_teorema_shannon_memoria(entropia, entropia_cond, longitud_promedio, n):
-    if entropia/n + entropia_cond/n <= longitud_promedio/n < entropia/n + entropia_cond/n + 1/n:
-        return True
-    else:
-        return False
 
 print('\nVerificación del primer teorema de Shannon para fuentes con memoria:')
 verificacion_BA_mem = verificar_teorema_shannon_memoria(entropiaBA, entropiaBAOrden2, longPromedioBAOrden2, 2)

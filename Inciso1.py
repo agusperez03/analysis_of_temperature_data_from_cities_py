@@ -76,7 +76,9 @@ plt.legend()
 plt.grid()
 plt.show()
 
-#se grafican las señales normalizadas
+#GRAFICOS OPCIONALES
+
+"""#se grafican las señales normalizadas
 plt.plot((BuenosAires - mediaBA)/desvioBA, label='Temperatura en Buenos Aires')
 plt.plot((Bogota - mediaBO)/desvioBO, label='Temperatura en Bogota')
 plt.plot((Vancouver - mediaVA)/desvioVA, label='Temperatura en Vancouver')
@@ -98,7 +100,7 @@ plt.plot((Bogota/desvioBO), label='Temperatura en Bogota')
 plt.plot((Vancouver/desvioVA), label='Temperatura en Vancouver')
 plt.legend()
 plt.grid()
-plt.show()
+plt.show()"""
 
 
 
